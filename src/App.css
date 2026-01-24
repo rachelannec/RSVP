@@ -86,13 +86,6 @@
   margin: 0 auto;
 }
 
-.text-area {
-  width: 800px;
-  height: 200px;
-  z-index: -1;
-
-}
-
 @media (max-width: 767px) {
   .card {
     width: 80%;

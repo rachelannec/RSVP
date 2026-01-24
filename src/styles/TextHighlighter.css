@@ -1,0 +1,46 @@
+.container {
+    position: relative;
+    margin-top: 20px;
+}
+
+.container label {
+    display: block;
+    margin-bottom: 8px;
+}
+
+.text-area {
+    text-align: left;
+    width: 800px;
+    height: 200px;
+}
+
+/* --- SPECIFIC: The Active View Mode --- */
+.view-mode {
+    width: 800px;
+    height: 200px;
+    border-color: #85CA76; 
+    background-color: #333;
+    overflow-y: auto;
+}
+
+/* --- SPECIFIC: The Text Area --- */
+.text-area:focus {
+    outline: none;
+    border-color: #85CA76; /* Green focus ring */
+    box-shadow: 0 0 0 3px rgba(133, 202, 118, 0.2); /* Soft green glow */
+}
+
+/* --- THE HIGHLIGHTED WORD --- */
+.active-word {
+    background-color: #85CA76;
+    color: white;
+    font-weight: bold;
+    padding: 2px 4px;
+    border-radius: 4px;
+}
+
+/* Non-active words (optional: dim them slightly) */
+.view-mode span:not(.active-word) {
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}

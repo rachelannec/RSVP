@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import rsvpLogo from '/logo.png';
 import './App.css'
 import SpeedSelector from './components/SpeedSelector';
+import TextHighlighter from './components/TextHighlighter';
 
 // const SAMPLE_TEXT = `'Di mo lang alam, naiisip kita Baka sakali lang maisip mo ako 'Di mo lang alam, hanggang sa gabi Inaasam makita kang muli`;
 
@@ -140,15 +141,17 @@ function App() {
         </div>
 
         <div className="input">
-          <textarea
-            value={text}
-            onChange={(e) => {
-              setText(e.target.value);
+          <TextHighlighter
+            text={text}
+            setText={setText}
+            words={words}
+            isPlaying={isPlaying}
+            currentIndex={index}
+            onEdit={() => {
+              setIsPlaying(false);
               setIndex(0);
-              setIsPlaying(false); // stop playing when user edits
+              setCountdown(null);
             }}
-            className='text-area'
-            placeholder='Paste your article here...' 
           />
         </div>
       </div>
