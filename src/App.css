@@ -5,6 +5,13 @@
   text-align: center;
 }
 
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
 .header {
   padding-top: 1.5rem;
 }
@@ -30,6 +37,11 @@
   height: 200px;
   background-color: #333;
   border-radius: 90px;
+  padding: 2em;
+}
+
+.controls {
+  margin: 1.5rem;
 }
 
 .word-card {
@@ -51,10 +63,6 @@
   }
 }
 
-.card {
-  padding: 2em;
-}
-
 .toggle-play {
   background-color: #E89D9D80;
   width: 10rem;
@@ -62,6 +70,17 @@
 
 .read-the-docs {
   color: #888;
+}
+
+.input {
+  margin: 0 auto;
+}
+
+.text-area {
+  width: 800px;
+  height: 200px;
+  z-index: -1;
+
 }
 
 @media (max-width: 767px) {
