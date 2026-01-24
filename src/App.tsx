@@ -27,12 +27,13 @@ function App() {
   const [index, setIndex] = useState(0);
   const [wpm,setWpm] = useState(300);
   const [text, setText] = useState(ABOUT_RSVP);
+  const [countdown, setCountdown] = useState<number | null>(null);
 
   const words = text.split(" ").filter(Boolean);
-  // const currentWord = words[index] || "";
+  const currentWord = words[index] || "";
   const isListEmpty = text.trim().length === 0;
 
-  // switches words bssed on wpm
+  // ----- switches words bssed on wpm
   useEffect(() => {
     let interval: number;
 
@@ -55,12 +56,39 @@ function App() {
     return () => clearInterval(interval);
   }, [isPlaying, wpm, index, words.length, isListEmpty]);
 
+  // ----- countdown 
+  useEffect(() => {
+    // if countdown is null, do nothing
+    if (countdown === null) return;
+
+    // if countdown > 0, decrease after 1 second
+    // else if countdown 0, play
+    if(countdown > 0){
+      const timer = setTimeout(() => {
+        setCountdown(countdown -1);
+      }, 1000); // 1 sec delay
+      return ()=> clearTimeout(timer);
+    } else if (countdown === 0){
+      setCountdown(null);
+      setIsPlaying(true); // start reading
+    }
+  }, [countdown]);
+
   // handle play/pause
   const togglePlay = () => {
+    // A - if playing OR counting down, pause
+    if(isPlaying || countdown !== null){
+      setIsPlaying(false);
+      setCountdown(null);
+      return;
+    }
+
+    // B - if stopped -> start countdown
     if (index >= words.length - 1){
       setIndex(0); // restart if finished
     }
-    setIsPlaying(!isPlaying);
+    setCountdown(3); // 3 sec countdown
+    // setIsPlaying(!isPlaying);
   };
 
   // helper to color middle letter
@@ -86,8 +114,10 @@ function App() {
 
         <div className="card">
           <span className='word-card'>
-            {renderWord(words[index]) ? (
-              <span className="word-card">{renderWord(words[index])}</span>
+            {countdown !== null ? (
+              <span className="countdown">{countdown}</span>
+            ) : currentWord ? (
+              <span className="word-card">{renderWord(currentWord)}</span>
             ) : (
               <span className="card-placeholder">
                 Enter text below...
@@ -101,7 +131,7 @@ function App() {
             className='toggle-play' 
             onClick={togglePlay}
             disabled={isListEmpty}>
-            {isPlaying ? "Pause" : index >= words.length -1 ? "Restart" : "Start"}
+            {countdown !== null ? "Cancel" : isPlaying ? "Pause" : index >= words.length -1 ? "Restart" : "Start"}
           </button>
           <SpeedSelector
             currentSpeed={wpm}
