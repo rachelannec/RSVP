@@ -30,7 +30,7 @@ function App() {
 
   const words = text.split(" ").filter(Boolean);
   // const currentWord = words[index] || "";
-  const isListEmpty = words.length === 0;
+  const isListEmpty = text.trim().length === 0;
 
   // switches words bssed on wpm
   useEffect(() => {
@@ -89,7 +89,7 @@ function App() {
             {renderWord(words[index]) ? (
               <span className="word-card">{renderWord(words[index])}</span>
             ) : (
-              <span className="text-gray-400">
+              <span className="card-placeholder">
                 Enter text below...
               </span>
             )}
@@ -97,7 +97,10 @@ function App() {
         </div>
 
         <div className="controls">
-          <button className='toggle-play' onClick={togglePlay}>
+          <button 
+            className='toggle-play' 
+            onClick={togglePlay}
+            disabled={isListEmpty}>
             {isPlaying ? "Pause" : index >= words.length -1 ? "Restart" : "Start"}
           </button>
           <SpeedSelector
