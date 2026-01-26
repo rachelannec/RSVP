@@ -32,7 +32,7 @@
 
 /* --- THE HIGHLIGHTED WORD --- */
 .active-word {
-    background-color: #85CA76;
+    background-color: #85ca766d;
     color: white;
     font-weight: bold;
     padding: 2px 4px;
