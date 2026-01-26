@@ -32,8 +32,8 @@ ul {
     border-radius: 8px;
     margin-top: 4px;
     overflow: hidden;
-    color: #000;
-    background-color: #333;
+    color: var(--text-main);
+    background-color: var(--bg-card);
     max-height: 250px;
     overflow-y: auto;
 
@@ -51,7 +51,7 @@ ul {
 }
 
 .dropdown-menu button:hover {
-    background-color: #f1f1f170;
+    background-color: var(--button-wpm);
 }
 
 /* Active state styling */

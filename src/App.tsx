@@ -29,6 +29,9 @@ function App() {
   const [wpm,setWpm] = useState(300);
   const [text, setText] = useState(ABOUT_RSVP);
   const [countdown, setCountdown] = useState<number | null>(null);
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem('theme') || 'light';
+  })
 
   const words = text.split(" ").filter(Boolean);
   const currentWord = words[index] || "";
@@ -75,7 +78,13 @@ function App() {
     }
   }, [countdown]);
 
-  // handle play/pause
+  // ----- theme effect
+  useEffect(() =>{
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  // helper play/pause
   const togglePlay = () => {
     // A - if playing OR counting down, pause
     if(isPlaying || countdown !== null){
@@ -105,12 +114,23 @@ function App() {
     )
   }
 
+  // helper to toggle theme
+  const toggleTheme= () => {
+    setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
+  }
+
   return (
     <>
       
       <div className="container">
         <div className="header">
           <img src={rsvpLogo} className="logo" alt="RSVP Logo" />
+          <div className="theme-toggle">
+            <i 
+            id='theme-toggle' 
+            onClick={toggleTheme}
+            className={`fas ${theme === 'light' ? 'fa-moon' : 'fa-sun'}`}></i>
+          </div>
         </div>
 
         <div className="card">

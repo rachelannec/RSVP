@@ -12,6 +12,8 @@
     text-align: left;
     width: 800px;
     height: 200px;
+    background-color: var(--bg-card);
+    color: var(--text-main);
 }
 
 /* --- SPECIFIC: The Active View Mode --- */
@@ -19,8 +21,9 @@
     width: 800px;
     height: 200px;
     border-color: #85CA76; 
-    background-color: #333;
+    background-color: var(--bg-card);
     overflow-y: auto;
+    font-size: .9rem;
 }
 
 /* --- SPECIFIC: The Text Area --- */
@@ -33,7 +36,7 @@
 /* --- THE HIGHLIGHTED WORD --- */
 .active-word {
     background-color: #85ca766d;
-    color: white;
+    color: var(--text-main);
     font-weight: bold;
     padding: 2px 4px;
     border-radius: 4px;
