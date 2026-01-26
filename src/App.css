@@ -22,6 +22,15 @@
   transition: filter 300ms;
 }
 
+.theme-toggle {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--text-main);
+}
+
 .card {
   display: flex;
   justify-content: center;
