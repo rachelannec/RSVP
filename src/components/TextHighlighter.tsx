@@ -20,16 +20,6 @@ const TextHighlighter: React.FC<TextHighlighterProps> = ({
 }) => {
     const activeWordRef = useRef<HTMLSpanElement>(null);
 
-    // auto scroll effect
-    useEffect(() => {
-        if(isPlaying && activeWordRef.current){
-            activeWordRef.current.scrollIntoView({
-                behavior: 'smooth',
-                block: 'center',
-            });
-        }
-    }, [currentIndex, isPlaying]);
-
     return (
         <div className="container">
             <label>
