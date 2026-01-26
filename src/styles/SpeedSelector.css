@@ -32,8 +32,8 @@ ul {
     border-radius: 8px;
     margin-top: 4px;
     overflow: hidden;
-    color: var(--text-main);
     background-color: var(--bg-card);
+    color: var(--text-main);
     max-height: 250px;
     overflow-y: auto;
 
@@ -48,6 +48,7 @@ ul {
     background: none;
     cursor: pointer;
     z-index: 101;
+    color: var(--text-main);
 }
 
 .dropdown-menu button:hover {
