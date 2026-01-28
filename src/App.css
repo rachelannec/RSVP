@@ -74,6 +74,11 @@
   }
 }
 
+.logo:hover {
+  transform: scale(1.05);
+  transition: transform 0.3s;
+}
+
 .toggle-play {
   background-color: var(--button-control);
   width: 10rem;
