@@ -108,7 +108,7 @@ function App() {
     return (
       <>
         {word.slice(0,centerIndex)}
-        <span style={{ color: 'red' }}>{word[centerIndex]}</span>
+        <span className='focal-point'>{word[centerIndex]}</span>
         {word.slice(centerIndex +1)}
       </>
     )

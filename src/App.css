@@ -31,6 +31,10 @@
   color: var(--text-main);
 }
 
+.focal-point {
+  color: var(--focal-color);
+}
+
 .card {
   display: flex;
   justify-content: center;
