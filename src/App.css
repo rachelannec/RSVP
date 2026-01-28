@@ -46,6 +46,30 @@
   padding: 2em;
 }
 
+/* --- NEW FULLSCREEN MODIFIER --- */
+.card.fullscreen {
+  position: fixed;      /* Detach from layout */
+  top: 0;
+  left: 0;
+  width: 100vw;         /* Full viewport width */
+  height: 100vh;        /* Full viewport height */
+  z-index: 1000;        /* Sit on top of everything */
+  border-radius: 0;     /* Remove corners */
+  margin: 0;            /* Remove margins */
+  border: none;         /* Optional: remove border */
+}
+
+/* Make text HUGE when in fullscreen */
+.card.fullscreen .word-card {
+  font-size: 6rem;      /* Adjust size as needed */
+  width: 100%;          /* Ensure it doesn't get squished */
+}
+
+/* Make the countdown HUGE too */
+.card.fullscreen .countdown {
+  font-size: 10rem;
+}
+
 .controls {
   margin: 1.5rem;
 }
