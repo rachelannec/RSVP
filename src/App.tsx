@@ -168,7 +168,7 @@ function App() {
             )}
           </span>
           {isFullscreen &&(
-            <div style={{ position: 'absolute', bottom: '20px', fontSize: '1rem', color: '#888' }}>
+            <div className='fullscreen-hint'>
               Press ESC or Click to Stop
             </div>
           )}

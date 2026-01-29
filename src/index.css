@@ -32,7 +32,6 @@ body {
   margin: 0;
   padding: 0;
   min-height: 100dvh;
-  width: 100dvw;
   background-color: var(--bg-main);
   color: var(--text-main);
   transition: background-color 0.3s, color 0.3s;

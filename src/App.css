@@ -104,8 +104,13 @@
 .controls.fullscreen {
   position: fixed;
   bottom: 50px;           /* Floating near bottom */
-  left: 50%;
-  transform: translateX(-50%);
+  
+  /* FIX: Robust Centering Logic */
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  
   z-index: 1001;          /* Higher than card (1000) */
   
   background-color: var(--bg-card);
@@ -115,6 +120,7 @@
   border: 1px solid var(--border-color);
   
   width: auto;
+  max-width: 400px;       /* Prevent it from being too wide on desktop */
   min-width: 300px; 
 }
 
@@ -141,6 +147,35 @@
 .input {
   margin: 20px;
   width: 100%;
+}
+
+.fullscreen-hint {
+    position: absolute;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    opacity: 0.0; /* Start hidden */
+    
+    animation: fadeIn 1s ease-in-out forwards;
+    animation-delay: 2s; /* Wait 2 seconds before showing so it doesn't distract immediately */
+}
+
+/* Style the "ESC" part to look like a key */
+.fullscreen-hint span {
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 2px 6px;
+    margin: 0 4px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    background-color: var(--bg-card);
+}
+
+@keyframes fadeIn {
+    to { opacity: 0.8; }
 }
 
 /* --- ANIMATIONS --- */
@@ -193,15 +228,21 @@
   
   /* Adjust Floating Controls for Mobile */
   .controls.fullscreen {
-    bottom: 40px;    /* Avoid iPhone home bar */
-    width: 90%;      /* Fit screen width */
-    min-width: unset;
-    padding: 1rem;
+    bottom: 40px;   
+    width: 90%;      
+    max-width: none;  /* Remove desktop limit */
+    min-width: auto;
+    padding: 1rem;    /* More padding for touch targets */
     flex-direction: row; /* Keep buttons side-by-side if possible */
   }
 
   .toggle-play {
     width: auto;
     flex: 1; /* Button grows to fill space */
+  }
+
+  .fullscreen-hint {
+    font-size: 0.8rem;
+    bottom: 60px;
   }
 }

@@ -9,6 +9,7 @@
 }
 
 .text-area {
+    margin: 0 20px;
     text-align: left;
     width: 800px;
     height: 200px;
