@@ -1,7 +1,10 @@
+/* --- GLOBAL LAYOUT --- */
 #root {
   max-width: 1280px;
   margin: 0 auto;
   text-align: center;
+  /* FIX: Use dynamic viewport height for mobile browsers */
+  min-height: 100dvh; 
 }
 
 .container {
@@ -9,17 +12,20 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  width: 100%;
 }
 
-/* .header {
-  padding-top: 1.5rem;
-} */
-
+/* --- LOGO & HEADER --- */
 .logo {
   height: 6em;
   padding: 1.5em;
   will-change: filter;
   transition: filter 300ms;
+}
+
+.logo:hover {
+  transform: scale(1.05);
+  transition: transform 0.3s;
 }
 
 .theme-toggle {
@@ -29,12 +35,10 @@
   font-size: 1.5rem;
   cursor: pointer;
   color: var(--text-main);
+  z-index: 50; /* Ensure it stays above other elements */
 }
 
-.focal-point {
-  color: var(--focal-color);
-}
-
+/* --- THE CARD (Standard Mode) --- */
 .card {
   display: flex;
   justify-content: center;
@@ -44,15 +48,32 @@
   background-color: var(--bg-card);
   border-radius: 90px;
   padding: 2em;
+  margin-bottom: 20px;
+  transition: all 0.3s ease-in-out;
+  position: relative; /* Setup for fullscreen transition */
 }
 
-/* --- NEW FULLSCREEN MODIFIER --- */
+.card-placeholder {
+  color: var(--text-muted);
+  font-size: 1.5rem;
+}
+
+.focal-point {
+  color: var(--focal-color); /* Red letter color */
+}
+
+.word-card {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+/* --- THE CARD (Fullscreen Mode) --- */
 .card.fullscreen {
   position: fixed;      /* Detach from layout */
   top: 0;
   left: 0;
   width: 100vw;         /* Full viewport width */
-  height: 100vh;        /* Full viewport height */
+  height: 100dvh;       /* Full viewport height (Dynamic for mobile) */
   z-index: 1000;        /* Sit on top of everything */
   border-radius: 0;     /* Remove corners */
   margin: 0;            /* Remove margins */
@@ -61,50 +82,56 @@
 
 /* Make text HUGE when in fullscreen */
 .card.fullscreen .word-card {
-  font-size: 6rem;      /* Adjust size as needed */
-  width: 100%;          /* Ensure it doesn't get squished */
+  font-size: 6rem;
+  width: 100%;
 }
 
 /* Make the countdown HUGE too */
 .card.fullscreen .countdown {
   font-size: 10rem;
+  color: var(--accent-color);
 }
 
+/* --- CONTROLS (Standard Mode) --- */
 .controls {
   margin: 1.5rem;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+  position: relative;
 }
 
-.word-card {
-  font-size: 2rem;
+/* --- CONTROLS (Fullscreen Mode) --- */
+.controls.fullscreen {
+  position: fixed;
+  bottom: 50px;           /* Floating near bottom */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1001;          /* Higher than card (1000) */
+  
+  background-color: var(--bg-card);
+  padding: 1rem 2rem;
+  border-radius: 20px;
+  box-shadow: 0px 10px 30px rgba(0,0,0,0.5);
+  border: 1px solid var(--border-color);
+  
+  width: auto;
+  min-width: 300px; 
 }
 
-.card-placeholder {
-  color: var(--text-muted);
-  font-size: 1.5rem;
+/* Fix Dropdown in Fullscreen (Opens Upwards) */
+.controls.fullscreen .dropdown-menu {
+  top: auto;        
+  bottom: 100%;     /* Anchor to bottom of control bar */
+  margin-bottom: 10px; 
+  margin-top: 0;
+  z-index: 1002;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.logo:hover {
-  transform: scale(1.05);
-  transition: transform 0.3s;
-}
-
+/* --- BUTTONS & INPUTS --- */
 .toggle-play {
-  background-color: var(--button-control);
+  background-color: var(--button-control); /* Ensure this var exists or use a color */
   width: 10rem;
 }
 
@@ -113,32 +140,70 @@
   opacity: 0.6;
 }
 
-.read-the-docs {
-  color: #888;
-}
-
 .input {
   margin: 20px;
+  width: 100%;
 }
 
-/* tablet */
+/* --- ANIMATIONS --- */
+@keyframes logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+/* --- TABLET RESPONSIVENESS --- */
 @media (max-width: 1023px) {
   .logo {
     height: 4em;
   }
   .card {
     border-radius: 70px;
+    width: 80%; /* Shrink card slightly */
   }
 }
 
-/* mobile */
+/* --- MOBILE RESPONSIVENESS --- */
 @media (max-width: 767px) {
   .logo {
     height: 3em;
   }
+  
+  /* Make card wider on phones */
   .card {
-    width: 80%;
-    height: 200px;
-    border-radius: 50px;
+    width: 95%;      
+    height: 250px;   
+    border-radius: 40px;
+    padding: 1em;
+  }
+
+  .card.fullscreen .word-card {
+    font-size: 3.5rem; /* Smaller than desktop fullscreen, but still big */
+  }
+
+  /* Stack controls or make them smaller */
+  .controls {
+    width: 95%;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  /* Adjust Floating Controls for Mobile */
+  .controls.fullscreen {
+    bottom: 40px;    /* Avoid iPhone home bar */
+    width: 90%;      /* Fit screen width */
+    min-width: unset;
+    padding: 1rem;
+    flex-direction: row; /* Keep buttons side-by-side if possible */
+  }
+
+  .toggle-play {
+    width: auto;
+    flex: 1; /* Button grows to fill space */
   }
 }

@@ -175,7 +175,7 @@ function App() {
         </div>
 
         {/* ----- CONTROL */}
-        <div className="controls">
+        <div className={`controls ${isFullscreen ? 'fullscreen' : ''}`}>
           <button 
             className='toggle-play' 
             onClick={togglePlay}
