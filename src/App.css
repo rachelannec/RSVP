@@ -3,7 +3,6 @@
   max-width: 1280px;
   margin: 0 auto;
   text-align: center;
-  /* FIX: Use dynamic viewport height for mobile browsers */
   min-height: 100dvh; 
 }
 
@@ -35,7 +34,7 @@
   font-size: 1.5rem;
   cursor: pointer;
   color: var(--text-main);
-  z-index: 50; /* Ensure it stays above other elements */
+  z-index: 50;
 }
 
 /* --- THE CARD (Standard Mode) --- */
@@ -50,7 +49,7 @@
   padding: 2em;
   margin-bottom: 20px;
   transition: all 0.3s ease-in-out;
-  position: relative; /* Setup for fullscreen transition */
+  position: relative;
 }
 
 .card-placeholder {
@@ -77,10 +76,9 @@
   z-index: 1000;        /* Sit on top of everything */
   border-radius: 0;     /* Remove corners */
   margin: 0;            /* Remove margins */
-  border: none;         /* Optional: remove border */
+  border: none;       
 }
 
-/* Make text HUGE when in fullscreen */
 .card.fullscreen .word-card {
   font-size: 6rem;
   width: 100%;
