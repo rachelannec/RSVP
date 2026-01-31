@@ -154,8 +154,13 @@ function App() {
         <div 
         className={`card ${isFullscreen ? 'fullscreen' : ''}`}
         onClick={() => {
-          if (isFullscreen) togglePlay;
-        }}>
+          if (isFullscreen){
+            setIsFullscreen(false);
+            setIsPlaying(false);
+            setCountdown(null);
+          }
+        }}
+        >
           <span className='word-card'>
             {countdown !== null ? (
               <span className="countdown">{countdown}</span>
