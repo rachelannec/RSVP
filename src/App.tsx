@@ -32,6 +32,7 @@ function App() {
   const [theme, setTheme] = useState(() => {
     return localStorage.getItem('theme') || 'light';
   })
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   const words = text.split(" ").filter(Boolean);
   const currentWord = words[index] || "";
@@ -84,12 +85,26 @@ function App() {
     localStorage.setItem('theme', theme);
   }, [theme]);
 
+  // ----- escape key listener for fullscreen
+  useEffect(() =>{
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if(e.key === 'Escape' && isFullscreen){
+        setIsFullscreen(false);
+        setIsPlaying(false);
+        setCountdown(null);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return() => window.removeEventListener('keydown', handleKeyDown);
+  }, [isFullscreen]);
+
   // helper play/pause
   const togglePlay = () => {
     // A - if playing OR counting down, pause
     if(isPlaying || countdown !== null){
       setIsPlaying(false);
       setCountdown(null);
+      setIsFullscreen(false); // to exit fullscreen
       return;
     }
 
@@ -97,6 +112,7 @@ function App() {
     if (index >= words.length - 1){
       setIndex(0); // restart if finished
     }
+    setIsFullscreen(true); // enter fullscreen
     setCountdown(3); // 3 sec countdown
     // setIsPlaying(!isPlaying);
   };
@@ -123,6 +139,7 @@ function App() {
     <>
       
       <div className="container">
+        {/* ----- HEADER */}
         <div className="header">
           <img src={rsvpLogo} className="logo" alt="RSVP Logo" />
           <div className="theme-toggle">
@@ -133,7 +150,17 @@ function App() {
           </div>
         </div>
 
-        <div className="card">
+        {/* ----- CARD */}
+        <div 
+        className={`card ${isFullscreen ? 'fullscreen' : ''}`}
+        onClick={() => {
+          if (isFullscreen){
+            setIsFullscreen(false);
+            setIsPlaying(false);
+            setCountdown(null);
+          }
+        }}
+        >
           <span className='word-card'>
             {countdown !== null ? (
               <span className="countdown">{countdown}</span>
@@ -145,9 +172,15 @@ function App() {
               </span>
             )}
           </span>
+          {isFullscreen &&(
+            <div className='fullscreen-hint'>
+              Press ESC or Click to Stop
+            </div>
+          )}
         </div>
 
-        <div className="controls">
+        {/* ----- CONTROL */}
+        <div className={`controls ${isFullscreen ? 'fullscreen' : ''}`}>
           <button 
             className='toggle-play' 
             onClick={togglePlay}
@@ -160,6 +193,7 @@ function App() {
           />
         </div>
 
+        {/* ----- INPUT */}
         <div className="input">
           <TextHighlighter
             text={text}

@@ -1,7 +1,9 @@
+/* --- GLOBAL LAYOUT --- */
 #root {
   max-width: 1280px;
   margin: 0 auto;
   text-align: center;
+  min-height: 100dvh; 
 }
 
 .container {
@@ -9,17 +11,20 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  width: 100%;
 }
 
-/* .header {
-  padding-top: 1.5rem;
-} */
-
+/* --- LOGO & HEADER --- */
 .logo {
   height: 6em;
   padding: 1.5em;
   will-change: filter;
   transition: filter 300ms;
+}
+
+.logo:hover {
+  transform: scale(1.05);
+  transition: transform 0.3s;
 }
 
 .theme-toggle {
@@ -29,12 +34,10 @@
   font-size: 1.5rem;
   cursor: pointer;
   color: var(--text-main);
+  z-index: 50;
 }
 
-.focal-point {
-  color: var(--focal-color);
-}
-
+/* --- THE CARD (Standard Mode) --- */
 .card {
   display: flex;
   justify-content: center;
@@ -44,14 +47,9 @@
   background-color: var(--bg-card);
   border-radius: 90px;
   padding: 2em;
-}
-
-.controls {
-  margin: 1.5rem;
-}
-
-.word-card {
-  font-size: 2rem;
+  margin-bottom: 20px;
+  transition: all 0.3s ease-in-out;
+  position: relative;
 }
 
 .card-placeholder {
@@ -59,23 +57,85 @@
   font-size: 1.5rem;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.focal-point {
+  color: var(--focal-color); /* Red letter color */
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.word-card {
+  font-size: 2rem;
+  font-weight: bold;
 }
 
+/* --- THE CARD (Fullscreen Mode) --- */
+.card.fullscreen {
+  position: fixed;      /* Detach from layout */
+  top: 0;
+  left: 0;
+  width: 100vw;         /* Full viewport width */
+  height: 100dvh;       /* Full viewport height (Dynamic for mobile) */
+  z-index: 1000;        /* Sit on top of everything */
+  border-radius: 0;     /* Remove corners */
+  margin: 0;            /* Remove margins */
+  border: none;       
+}
+
+.card.fullscreen .word-card {
+  font-size: 6rem;
+  width: 100%;
+}
+
+/* Make the countdown HUGE too */
+.card.fullscreen .countdown {
+  font-size: 10rem;
+  color: var(--accent-color);
+}
+
+/* --- CONTROLS (Standard Mode) --- */
+.controls {
+  margin: 1.5rem;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+/* --- CONTROLS (Fullscreen Mode) --- */
+.controls.fullscreen {
+  position: fixed;
+  bottom: 50px;           /* Floating near bottom */
+  
+  /* FIX: Robust Centering Logic */
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  
+  z-index: 1001;          /* Higher than card (1000) */
+  
+  background-color: var(--bg-card);
+  padding: 1rem 2rem;
+  border-radius: 20px;
+  box-shadow: 0px 10px 30px rgba(0,0,0,0.5);
+  border: 1px solid var(--border-color);
+  
+  width: auto;
+  max-width: 400px;       /* Prevent it from being too wide on desktop */
+  min-width: 300px; 
+}
+
+/* Fix Dropdown in Fullscreen (Opens Upwards) */
+.controls.fullscreen .dropdown-menu {
+  top: auto;        
+  bottom: 100%;     /* Anchor to bottom of control bar */
+  margin-bottom: 10px; 
+  margin-top: 0;
+  z-index: 1002;
+}
+
+/* --- BUTTONS & INPUTS --- */
 .toggle-play {
-  background-color: var(--button-control);
+  background-color: var(--button-control); /* Ensure this var exists or use a color */
   width: 10rem;
 }
 
@@ -84,32 +144,105 @@
   opacity: 0.6;
 }
 
-.read-the-docs {
-  color: #888;
-}
-
 .input {
   margin: 20px;
+  width: 100%;
 }
 
-/* tablet */
+.fullscreen-hint {
+    position: absolute;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    opacity: 0.0; /* Start hidden */
+    
+    animation: fadeIn 1s ease-in-out forwards;
+    animation-delay: 2s; /* Wait 2 seconds before showing so it doesn't distract immediately */
+}
+
+/* Style the "ESC" part to look like a key */
+.fullscreen-hint span {
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 2px 6px;
+    margin: 0 4px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    background-color: var(--bg-card);
+}
+
+@keyframes fadeIn {
+    to { opacity: 0.8; }
+}
+
+/* --- ANIMATIONS --- */
+@keyframes logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+/* --- TABLET RESPONSIVENESS --- */
 @media (max-width: 1023px) {
   .logo {
     height: 4em;
   }
   .card {
     border-radius: 70px;
+    width: 80%; /* Shrink card slightly */
   }
 }
 
-/* mobile */
+/* --- MOBILE RESPONSIVENESS --- */
 @media (max-width: 767px) {
   .logo {
     height: 3em;
   }
+  
+  /* Make card wider on phones */
   .card {
-    width: 80%;
-    height: 200px;
-    border-radius: 50px;
+    width: 95%;      
+    height: 250px;   
+    border-radius: 40px;
+    padding: 1em;
+  }
+
+  .card.fullscreen .word-card {
+    font-size: 3.5rem; /* Smaller than desktop fullscreen, but still big */
+  }
+
+  /* Stack controls or make them smaller */
+  .controls {
+    width: 95%;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  /* Adjust Floating Controls for Mobile */
+  .controls.fullscreen {
+    bottom: 40px;   
+    width: 90%;      
+    max-width: none;  /* Remove desktop limit */
+    min-width: auto;
+    padding: 1rem;    /* More padding for touch targets */
+    flex-direction: row; /* Keep buttons side-by-side if possible */
+  }
+
+  .toggle-play {
+    width: auto;
+    flex: 1; /* Button grows to fill space */
+  }
+
+  .fullscreen-hint {
+    font-size: 0.8rem;
+    bottom: 60px;
   }
 }
