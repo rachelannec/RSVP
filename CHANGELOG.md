@@ -2,9 +2,9 @@
 
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## Unreleased (20260131)
 
-### Added
+### Added 
 - **Fullscreen Reading Mode**: Automatically enters fullscreen when Start is pressed
   - Immersive reading experience with enlarged text (6rem font size)
   - Floating controls at bottom of screen with backdrop
