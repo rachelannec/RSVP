@@ -3,6 +3,7 @@ import rsvpLogo from '/logo.png';
 import './App.css'
 import SpeedSelector from './components/SpeedSelector';
 import TextHighlighter from './components/TextHighlighter';
+import FileUpload from './components/FileUpload';
 
 // const SAMPLE_TEXT = `'Di mo lang alam, naiisip kita Baka sakali lang maisip mo ako 'Di mo lang alam, hanggang sa gabi Inaasam makita kang muli`;
 
@@ -135,6 +136,14 @@ function App() {
     setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
   }
 
+  // helper to handle imported text
+  const handleTextImport = (importedText: string) => {
+    setText(importedText);
+    setIndex(0);
+    setIsPlaying(false);
+    setCountdown(null);
+  }
+
   return (
     <>
       
@@ -195,18 +204,24 @@ function App() {
 
         {/* ----- INPUT */}
         <div className="input">
-          <TextHighlighter
-            text={text}
-            setText={setText}
-            words={words}
-            isPlaying={isPlaying}
-            currentIndex={index}
-            onEdit={() => {
-              setIsPlaying(false);
-              setIndex(0);
-              setCountdown(null);
-            }}
-          />
+          <div className="text-highlight">
+            <TextHighlighter
+              text={text}
+              setText={setText}
+              words={words}
+              isPlaying={isPlaying}
+              currentIndex={index}
+              onEdit={() => {
+                setIsPlaying(false);
+                setIndex(0);
+                setCountdown(null);
+              }}
+            />
+          </div>
+
+          <div className="file-upload">
+            <FileUpload onTextExtracted={handleTextImport} />
+          </div>
         </div>
       </div>
 
