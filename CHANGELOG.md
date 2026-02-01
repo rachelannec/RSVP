@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## Unreleased (20260201)
+## v1.3.0 (20260201)
 
 ### Added 
 - **File Import Functionality**: Import text from external files
