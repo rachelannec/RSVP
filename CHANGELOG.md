@@ -2,6 +2,41 @@
 
 All notable changes to this project will be documented in this file.
 
+## Unreleased (20260201)
+
+### Added 
+- **File Import Functionality**: Import text from external files
+  - Support for .txt, .pdf, and .docx file formats
+  - Dedicated FileUpload component with user-friendly button
+  - Visual feedback with success/error popup messages
+  - Automatic text area population with imported content
+  - File validation and error handling
+  - Mobile-responsive import button
+- **Success/Error Notifications**: Toast-style popup messages
+  - Auto-dismiss after 3 seconds
+  - Distinct styling for success (green) and error (red) states
+  - Animated slide-in effect
+  - Icon indicators (check circle for success, exclamation for error)
+
+### Changed
+- Enhanced file handling with better error messages
+- Improved user feedback for import operations
+- Reset playback state when new file is imported
+
+### Technical
+- Integrated `pdfjs-dist` for PDF text extraction
+- Integrated `mammoth` for DOCX text extraction
+- Dynamic import of PDF library to avoid worker initialization issues
+- CDN-based PDF.js worker configuration (unpkg)
+- FileReader API for .txt file processing
+- TypeScript interfaces for file upload props
+
+### Fixed
+- PDF worker configuration issues
+- Empty file detection and handling
+- File input reset to allow re-uploading same file
+
+
 ## Unreleased (20260131)
 
 ### Added 
