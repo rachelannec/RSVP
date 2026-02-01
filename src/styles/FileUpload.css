@@ -1,3 +1,8 @@
+.file-upload {
+    display: inline-block;
+    position: relative;
+}
+
 .file-upload-button {
     background-color: var(--button-wpm);
     color: var(--text-main);
@@ -23,12 +28,59 @@
     font-size: 1.1em;
 }
 
+/* Message Popup */
+.message-popup {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-weight: 500;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    animation: slideIn 0.3s ease-out;
+    z-index: 1000;
+}
+
+.message-popup.success {
+    background-color: #85ca76;
+    color: #1e1e1e;
+}
+
+.message-popup.error {
+    background-color: #e89d9d;
+    color: #1e1e1e;
+}
+
+.message-popup i {
+    font-size: 1.2em;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(400px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
 @media (max-width: 767px) {
     .file-upload-button {
         padding: 0.5em 1em;
         font-size: 0.9em;
         height: auto;
-        width: 400px;
         text-align: center;
+    }
+
+    .message-popup {
+        top: 70px;
+        right: 10px;
+        left: 10px;
+        font-size: 0.9em;
     }
 }

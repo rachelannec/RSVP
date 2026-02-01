@@ -1,10 +1,6 @@
-import React, { useRef } from 'react';
-import  * as pdfjsLib from 'pdfjs-dist';
+import React, { useRef, useState } from 'react';
 import mammoth from 'mammoth';
 import '../styles/FileUpload.css';
-
-// Set up PDF.js worker
-pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
 
 interface FileUploadProps {
     onTextExtracted: (text: string) => void;
@@ -12,6 +8,16 @@ interface FileUploadProps {
 
 const FileUpload: React.FC<FileUploadProps> = ({ onTextExtracted }) => {
     const fileInputRef = useRef<HTMLInputElement>(null);
+    const [showMessage, setShowMessage] = useState(false);
+    const [message, setMessage] = useState('');
+    const [isError, setIsError] = useState(false);
+
+    const showPopup = (msg: string, error: boolean = false) => {
+        setMessage(msg);
+        setIsError(error);
+        setShowMessage(true);
+        setTimeout(() => setShowMessage(false), 3000);
+    };
 
     const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
@@ -22,7 +28,7 @@ const FileUpload: React.FC<FileUploadProps> = ({ onTextExtracted }) => {
 
             if (file.type === 'text/plain') {
                 extractedText = await extractTextFromTxt(file);
-            } else if (file.type === 'application/pdf') {
+            } else if (file.type === 'application/pdf' || file.name.endsWith('.pdf')) {
                 extractedText = await extractTextFromPdf(file);
             } else if (
                 file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ||
@@ -30,11 +36,17 @@ const FileUpload: React.FC<FileUploadProps> = ({ onTextExtracted }) => {
             ) {
                 extractedText = await extractTextFromDocx(file);
             } else {
-                alert('Unsupported file type. Please upload a .txt, .pdf, or .docx file.');
+                showPopup('Unsupported file type. Please upload a .txt, .pdf, or .docx file.', true);
+                return;
+            }
+
+            if (extractedText.trim().length === 0) {
+                showPopup('The file appears to be empty or could not be read.', true);
                 return;
             }
 
             onTextExtracted(extractedText);
+            showPopup(`Successfully imported ${file.name}!`);
             
             // Reset input so the same file can be uploaded again
             if (fileInputRef.current) {
@@ -42,7 +54,7 @@ const FileUpload: React.FC<FileUploadProps> = ({ onTextExtracted }) => {
             }
         } catch (error) {
             console.error('Error reading file:', error);
-            alert('Failed to read file. Please try again.');
+            showPopup('Failed to read file. Please try again.', true);
         }
     };
 
@@ -56,20 +68,40 @@ const FileUpload: React.FC<FileUploadProps> = ({ onTextExtracted }) => {
     };
 
     const extractTextFromPdf = async (file: File): Promise<string> => {
-        const arrayBuffer = await file.arrayBuffer();
-        const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-        let fullText = '';
+        try {
+            // Dynamic import to avoid worker issues
+            const pdfjsLib = await import('pdfjs-dist');
+            
+            // Use unpkg for worker
+            pdfjsLib.GlobalWorkerOptions.workerSrc = 
+                `https://unpkg.com/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.mjs`;
 
-        for (let i = 1; i <= pdf.numPages; i++) {
-            const page = await pdf.getPage(i);
-            const textContent = await page.getTextContent();
-            const pageText = textContent.items
-                .map((item: any) => item.str)
-                .join(' ');
-            fullText += pageText + ' ';
+            const arrayBuffer = await file.arrayBuffer();
+            const loadingTask = pdfjsLib.getDocument({
+                data: arrayBuffer,
+            });
+            const pdf = await loadingTask.promise;
+            let fullText = '';
+
+            for (let i = 1; i <= pdf.numPages; i++) {
+                const page = await pdf.getPage(i);
+                const textContent = await page.getTextContent();
+                const pageText = textContent.items
+                    .map((item: any) => {
+                        if ('str' in item) {
+                            return item.str;
+                        }
+                        return '';
+                    })
+                    .join(' ');
+                fullText += pageText + '\n';
+            }
+
+            return fullText.trim();
+        } catch (error) {
+            console.error('PDF extraction error:', error);
+            throw new Error('Failed to extract text from PDF. The file may be corrupted or password-protected.');
         }
-
-        return fullText.trim();
     };
 
     const extractTextFromDocx = async (file: File): Promise<string> => {
@@ -99,11 +131,16 @@ const FileUpload: React.FC<FileUploadProps> = ({ onTextExtracted }) => {
                 onChange={handleFileChange}
                 style={{ display: 'none' }}
             />
+            
+            {/* Success/Error Message Popup */}
+            {showMessage && (
+                <div className={`message-popup ${isError ? 'error' : 'success'}`}>
+                    <i className={`fas ${isError ? 'fa-exclamation-circle' : 'fa-check-circle'}`}></i>
+                    <span>{message}</span>
+                </div>
+            )}
         </div>
     );
 };
 
 export default FileUpload;
-
-// npm install pdfjs-dist mammoth
-// npm install --save-dev @types/pdfjs-dist
