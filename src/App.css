@@ -76,6 +76,7 @@
   z-index: 1000;        /* Sit on top of everything */
   border-radius: 0;     /* Remove corners */
   margin: 0;            /* Remove margins */
+  padding: 0;
   border: none;       
 }
 
@@ -94,7 +95,7 @@
 .controls {
   margin: 1.5rem;
   display: flex;
-  gap: 1rem;
+  gap: .5rem;
   align-items: center;
   justify-content: center;
   position: relative;
@@ -106,15 +107,15 @@
   bottom: 50px;           /* Floating near bottom */
   
   /* FIX: Robust Centering Logic */
-  left: 0;
-  right: 0;
-  margin-left: auto;
-  margin-right: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
   
   z-index: 1001;          /* Higher than card (1000) */
   
   background-color: var(--bg-card);
-  padding: 1rem 2rem;
+  padding: 1rem;
   border-radius: 20px;
   box-shadow: 0px 10px 30px rgba(0,0,0,0.5);
   border: 1px solid var(--border-color);
@@ -145,17 +146,18 @@
 }
 
 .fullscreen-hint {
-    position: absolute;
-    bottom: 100px;
-    left: 50%;
-    transform: translateX(-50%);
+  position: fixed;
+  bottom: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
     
-    font-size: 0.9rem;
-    color: var(--text-muted);
-    opacity: 0.0; /* Start hidden */
-    
-    animation: fadeIn 1s ease-in-out forwards;
-    animation-delay: 2s; /* Wait 2 seconds before showing so it doesn't distract immediately */
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  opacity: 0.0; /* Start hidden */
+  
+  animation: fadeIn 1s ease-in-out forwards;
+  animation-delay: 2s; /* Wait 2 seconds before showing so it doesn't distract immediately */
 }
 
 /* Style the "ESC" part to look like a key */
@@ -167,6 +169,11 @@
     font-size: 0.8rem;
     font-weight: bold;
     background-color: var(--bg-card);
+}
+
+.controls.fullscreen button,
+.controls.fullscreen .dropdown-menu {
+  margin: 0; /* Remove random default margins */
 }
 
 .input {
@@ -228,7 +235,6 @@
     width: 95%;      
     height: 250px;   
     border-radius: 40px;
-    padding: 1em;
   }
 
   .card.fullscreen .word-card {
@@ -259,6 +265,6 @@
 
   .fullscreen-hint {
     font-size: 0.8rem;
-    bottom: 60px;
+    bottom: 20px;
   }
 }
