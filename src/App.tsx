@@ -20,9 +20,7 @@ Visual Processing: The technique trains your brain to process words as visual im
 Benefits 
 Drastically Increased Speed: While the average person reads about 238 words per minute (wpm), RSVP can help users reach speeds of up to 900 wpm.
 
-Example: At 900 wpm, you could read Jane Austen's Pride and Prejudice in just 2 hours and 22 minutes, compared to the 8.5 hours it takes at an average pace.
-
-Improved Focus: Because the words appear rapidly and in a fixed location, the technique forces you to stay focused and eliminates the time lost to eye movements.`;
+To start, copy and paste your text into the box below or upload a .txt, pdf, docx file. Click "Start" to begin reading using the RSVP technique. Adjust the speed using the selector to find a comfortable pace. Happy reading!`;
 
 function App() {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -35,7 +33,7 @@ function App() {
   })
   const [isFullscreen, setIsFullscreen] = useState(false);
 
-  const words = text.split(" ").filter(Boolean);
+  const words = text.split(/[\s\n]+/).filter(Boolean); // regex for spaces and new lines +
   const currentWord = words[index] || "";
   const isListEmpty = text.trim().length === 0;
 

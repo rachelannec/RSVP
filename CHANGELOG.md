@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.3.2 (20260203) 
+
+### Change
+- **Improve Word Splitting**
+- **Update Instructions to Start**
+
 ## v1.3.1 (20260202)
 
 ### Fixed
